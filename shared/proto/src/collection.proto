@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package collection;
+
+option go_package = "./collection;shared_proto_build_collection";
+
+message Vector {
+  repeated float values = 1 [packed = true];
+}
+
+message Empty {}
+
+message SearchRequest { Vector query = 1; uint32 limit = 2; }
+message SearchResponse { repeated uint64 keys = 1; repeated float distances = 2; }
+
+message AddRequest { uint64 key = 1; Vector vector = 2; }
+message AddResponse { bool shardFull = 1; }
+
+message AddMultiRequest { repeated uint64 keys = 1; repeated Vector vectors = 2; }
+message AddMultiResponse { uint64 inserted = 1; bool shardFull = 2; }
+
+message GetRequest { uint64 key = 1; uint64 count = 2; }
+message GetResponse { Vector vector = 1; }
+
+message HasRequest { uint64 key = 1; }
+message HasResponse { bool ok = 1; }
+
+message DeleteRequest { uint64 key = 1; }
+message DeleteResponse { bool ok = 1; }
+
+message LengthResponse { uint64 length = 1; }
+
+message CapacityResponse { uint64 capacity = 1; }
+
+message SizeResponse { uint64 size = 1; }
+
+service Collection {
+  rpc Search (SearchRequest) returns (SearchResponse);
+
+  rpc Add (AddRequest) returns (AddResponse);
+  rpc AddMulti (AddMultiRequest) returns (AddMultiResponse);
+
+  rpc Get (GetRequest) returns (GetResponse);
+
+  rpc Has (HasRequest) returns (HasResponse);
+
+  rpc Delete (DeleteRequest) returns (DeleteResponse);
+
+  rpc Save (Empty) returns (Empty);
+
+  rpc Length (Empty) returns (LengthResponse);
+
+  rpc Capacity (Empty) returns (CapacityResponse);
+
+  rpc Size (Empty) returns (SizeResponse);
+}
