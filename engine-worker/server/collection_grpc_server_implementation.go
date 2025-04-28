@@ -1,8 +1,8 @@
 package server
 
 import (
-	"github.com/danielealbano/cvdb/engine-worker/collection"
-	shared_proto_build_collection "github.com/danielealbano/cvdb/shared/proto/build/collection"
+	"github.com/danielealbano/svdb/engine-worker/collection"
+	shared_proto_build_collection "github.com/danielealbano/svdb/shared/proto/build/collection"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

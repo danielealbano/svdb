@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/c2h5oh/datasize"
 	"github.com/caarlos0/env"
-	"github.com/danielealbano/cvdb/engine-worker/collection"
+	"github.com/danielealbano/svdb/engine-worker/collection"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/phuslu/log"
 	"time"

@@ -1,8 +1,8 @@
 package server
 
 import (
-	"github.com/danielealbano/cvdb/engine-worker/collection"
-	shared_support "github.com/danielealbano/cvdb/shared/support"
+	"github.com/danielealbano/svdb/engine-worker/collection"
+	shared_support "github.com/danielealbano/svdb/shared/support"
 	"google.golang.org/grpc"
 	"net"
 	"sync"

@@ -1,3 +1,3 @@
-module github.com/danielealbano/cvdb/cli
+module github.com/danielealbano/svdb/cli
 
 go 1.24

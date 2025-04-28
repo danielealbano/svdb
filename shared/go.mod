@@ -1,4 +1,4 @@
-module github.com/danielealbano/cvdb/shared
+module github.com/danielealbano/svdb/shared
 
 go 1.24
 

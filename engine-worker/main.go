@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/danielealbano/cvdb/engine-worker/collection"
-	"github.com/danielealbano/cvdb/engine-worker/config"
-	"github.com/danielealbano/cvdb/engine-worker/server"
-	shared_support "github.com/danielealbano/cvdb/shared/support"
+	"github.com/danielealbano/svdb/engine-worker/collection"
+	"github.com/danielealbano/svdb/engine-worker/config"
+	"github.com/danielealbano/svdb/engine-worker/server"
+	shared_support "github.com/danielealbano/svdb/shared/support"
 	log "github.com/phuslu/log"
 	"net"
 	"os"

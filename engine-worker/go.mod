@@ -1,4 +1,4 @@
-module github.com/danielealbano/cvdb/engine-worker
+module github.com/danielealbano/svdb/engine-worker
 
 go 1.24
 

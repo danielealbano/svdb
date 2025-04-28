@@ -3,7 +3,7 @@ package collection
 import (
 	"fmt"
 	"github.com/c2h5oh/datasize"
-	shared_support "github.com/danielealbano/cvdb/shared/support"
+	shared_support "github.com/danielealbano/svdb/shared/support"
 	usearch "github.com/unum-cloud/usearch/golang"
 	"unsafe"
 )

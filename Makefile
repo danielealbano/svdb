@@ -1,4 +1,4 @@
-TOOLS_PROTO_BUILDER_IMAGE := cvdb-tools-proto-builder
+TOOLS_PROTO_BUILDER_IMAGE := svdb-tools-proto-builder
 TOOLS_PROTO_BUILDER_IMAGE_DOCKER_CONTEXT := tools/proto-builder
 TOOLS_PROTO_BUILDER_IMAGE_STAMP := .$(TOOLS_PROTO_BUILDER_IMAGE).stamp
 
