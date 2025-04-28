@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/c2h5oh/datasize"
 	"github.com/caarlos0/env"
-	"github.com/danielealbano/svdb/engine-worker/collection"
+	"github.com/danielealbano/svdb/shared/collection"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/phuslu/log"
 	"time"
@@ -70,11 +70,11 @@ func ValidateConfig(config *Config) error {
 		return fmt.Errorf("collection vector dimensions must be greater than 0")
 	}
 
-	if _, err = collection.ParseQuantization(config.CollectionQuantization); err != nil {
+	if _, err = shared_collection.ParseQuantization(config.CollectionQuantization); err != nil {
 		return fmt.Errorf("invalid collection quantization: %s", config.CollectionQuantization)
 	}
 
-	if _, err = collection.ParseMetric(config.CollectionMetric); err != nil {
+	if _, err = shared_collection.ParseMetric(config.CollectionMetric); err != nil {
 		return fmt.Errorf("invalid collection metric: %s", config.CollectionMetric)
 	}
 
