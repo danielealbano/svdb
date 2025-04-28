@@ -12,6 +12,7 @@ func GenericMain(mainFunc GenericMainFunc, version, commit, buildDate, builtBy, 
 
 	defer ResetSignals()
 	SetupSignalsCatching()
+	defer StopSignal.Cancel()
 
 	SetupLogger(StopSignal.Context)
 

@@ -54,12 +54,10 @@ func loggerRoutine(ctx context.Context, logMessagesChan <-chan logMessage) {
 		}
 	}
 
-	if len(logMessagesChan) > 0 {
-		for m := range logMessagesChan {
-			_, err := fmt.Fprintln(m.writer, m.message)
-			if err != nil {
-				panic(err)
-			}
+	for m := range logMessagesChan {
+		_, err := fmt.Fprintln(m.writer, m.message)
+		if err != nil {
+			panic(err)
 		}
 	}
 }
