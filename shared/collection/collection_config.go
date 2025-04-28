@@ -1,4 +1,4 @@
-package collection
+package shared_collection
 
 import (
 	"fmt"

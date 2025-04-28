@@ -1,9 +1,7 @@
-package collection
+package shared_collection
 
 import (
 	"fmt"
-	"github.com/c2h5oh/datasize"
-	shared_support "github.com/danielealbano/svdb/shared/support"
 	usearch "github.com/unum-cloud/usearch/golang"
 	"unsafe"
 )
@@ -13,9 +11,10 @@ type Key usearch.Key
 type Vector []float32
 
 type Collection struct {
-	index  *usearch.Index
-	isFull bool
-	Config *CollectionConfig
+	index   *usearch.Index
+	isFull  bool
+	Config  *CollectionConfig
+	isDirty bool
 }
 
 func NewCollection(config *CollectionConfig) (*Collection, error) {
@@ -48,7 +47,13 @@ func (c *Collection) Load(path string) error {
 		c.isFull = true
 	}
 
+	c.isDirty = false
+
 	return nil
+}
+
+func (c *Collection) IsDirty() bool {
+	return c.isDirty
 }
 
 func (c *Collection) Destroy() error {
@@ -115,6 +120,7 @@ func (c *Collection) AddMulti(keys []Key, vectors []Vector) (uint64, bool, error
 			return inserted, false, fmt.Errorf("failed to add vector to index: %w", err)
 		}
 
+		c.isDirty = true
 		inserted++
 
 		finalSize, err = c.index.SerializedLength()
@@ -126,13 +132,6 @@ func (c *Collection) AddMulti(keys []Key, vectors []Vector) (uint64, bool, error
 			break
 		}
 	}
-
-	finalSize, _ = c.index.SerializedLength()
-	shared_support.Logger().Info().Msgf(
-		"inserted %d key(s) to index, current size: %s, the shard is full: %t",
-		inserted,
-		datasize.ByteSize(finalSize).HumanReadable(),
-		c.isFull)
 
 	return inserted, c.isFull, nil
 }
@@ -197,6 +196,8 @@ func (c *Collection) Save(path string) error {
 	if err != nil {
 		return fmt.Errorf("failed to save index: %w", err)
 	}
+
+	c.isDirty = false
 
 	return nil
 }
