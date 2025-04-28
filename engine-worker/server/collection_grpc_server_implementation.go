@@ -1,7 +1,8 @@
 package server
 
 import (
-	"github.com/danielealbano/svdb/engine-worker/collection"
+	"github.com/danielealbano/svdb/shared/collection"
+	shared_grpc_server "github.com/danielealbano/svdb/shared/grpc_server"
 	shared_proto_build_collection "github.com/danielealbano/svdb/shared/proto/build/collection"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc/codes"
@@ -11,7 +12,7 @@ import (
 
 type collectionGrpcServerImplementation struct {
 	shared_proto_build_collection.UnimplementedCollectionServer
-	collection     *collection.Collection
+	collection     *shared_collection.Collection
 	collectionPath string
 }
 
@@ -20,10 +21,11 @@ func vectorToPB(v []float32) *shared_proto_build_collection.Vector {
 }
 
 func RegisterCollectionGrpcServerImplementation(
-	server *GrpcServer,
+	server *shared_grpc_server.GrpcServer,
+	coll *shared_collection.Collection,
 	path string) {
-	shared_proto_build_collection.RegisterCollectionServer(server.grpcServer, &collectionGrpcServerImplementation{
-		collection:     server.collection,
+	shared_proto_build_collection.RegisterCollectionServer(server.GrpcServer, &collectionGrpcServerImplementation{
+		collection:     coll,
 		collectionPath: path,
 	})
 }
@@ -73,7 +75,7 @@ func (s *collectionGrpcServerImplementation) Add(
 				s.collection.Config.Dimensions)
 	}
 
-	_, isFull, err := s.collection.Add(collection.Key(req.Key), req.Vector.Values)
+	_, isFull, err := s.collection.Add(shared_collection.Key(req.Key), req.Vector.Values)
 	return &shared_proto_build_collection.AddResponse{
 		ShardFull: isFull,
 	}, err
@@ -113,8 +115,8 @@ func (s *collectionGrpcServerImplementation) AddMulti(
 	}
 
 	inserted, isFull, err := s.collection.AddMulti(
-		*(*[]collection.Key)(unsafe.Pointer(&req.Keys)),
-		*(*[]collection.Vector)(unsafe.Pointer(&vectors)))
+		*(*[]shared_collection.Key)(unsafe.Pointer(&req.Keys)),
+		*(*[]shared_collection.Vector)(unsafe.Pointer(&vectors)))
 
 	if err != nil {
 		var err2 error
@@ -152,7 +154,7 @@ func (s *collectionGrpcServerImplementation) Get(
 			status.Errorf(codes.InvalidArgument, "count must be greater than 0")
 	}
 
-	vec, err := s.collection.Get(collection.Key(req.Key), uint(req.Count))
+	vec, err := s.collection.Get(shared_collection.Key(req.Key), uint(req.Count))
 	if err != nil {
 		return nil, err
 	}
@@ -169,7 +171,7 @@ func (s *collectionGrpcServerImplementation) Has(
 	}
 
 	return &shared_proto_build_collection.HasResponse{
-		Ok: s.collection.Has(collection.Key(req.Key)),
+		Ok: s.collection.Has(shared_collection.Key(req.Key)),
 	}, nil
 }
 
@@ -181,7 +183,7 @@ func (s *collectionGrpcServerImplementation) Delete(
 			status.Errorf(codes.InvalidArgument, "request empty or missing arguments")
 	}
 
-	err := s.collection.Delete(collection.Key(req.Key))
+	err := s.collection.Delete(shared_collection.Key(req.Key))
 
 	return &shared_proto_build_collection.DeleteResponse{
 		Ok: err == nil,
