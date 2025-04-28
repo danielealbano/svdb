@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package frontend;
+
+option go_package = "./frontend;shared_proto_build_frontend";
+
+message Vector {
+  repeated float values = 1 [packed = true];
+}
+
+message Empty {}
+
+message SearchRequest { Vector query = 1; uint32 limit = 2; }
+message SearchResponse { repeated uint64 keys = 1; repeated float distances = 2; }
+
+message AddRequest { uint64 key = 1; Vector vector = 2; }
+
+message AddMultiRequest { repeated AddRequest requests = 1; }
+message AddMultiResponse { uint64 inserted = 1; }
+
+message GetRequest { uint64 key = 1; uint64 count = 2; }
+message GetResponse { Vector vector = 1; }
+
+message HasRequest { uint64 key = 1; }
+message HasResponse { bool ok = 1; }
+
+message DeleteRequest { uint64 key = 1; }
+message DeleteResponse { bool ok = 1; }
+
+message LengthResponse { uint64 length = 1; }
+
+message SizeResponse { uint64 size = 1; }
+
+service Frontend {
+  rpc Search (SearchRequest) returns (SearchResponse);
+
+  rpc Add (AddRequest) returns (Empty);
+  rpc AddMulti (AddMultiRequest) returns (AddMultiResponse);
+
+  rpc Get (GetRequest) returns (GetResponse);
+
+  rpc Has (HasRequest) returns (HasResponse);
+
+  rpc Delete (DeleteRequest) returns (DeleteResponse);
+
+  rpc Save (Empty) returns (Empty);
+
+  rpc Length (Empty) returns (LengthResponse);
+
+  rpc Size (Empty) returns (SizeResponse);
+}
